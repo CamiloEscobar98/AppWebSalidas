@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->unsignedMediumInteger('id', true);
             $table->string('name');
             $table->string('lastname');
-            $table->string('code');
+            $table->string('code', 4);
             $table->string('password');
             $table->string('emailu');
             $table->string('email')->nullable();
