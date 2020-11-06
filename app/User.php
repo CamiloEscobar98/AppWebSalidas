@@ -10,30 +10,39 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'lastname',
+        'code',
+        'password',
+        'emailu',
+        'email',
+        'address',
+        'phone',
+        'birthday'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
-        'password', 'remember_token',
+        'password'
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function document()
+    {
+        return $this->belongsTo(\App\Models\Document::class);
+    }
+
+    public function image_profile()
+    {
+        return $this->belongsTo(\App\Models\ImageProfile::class);
+    }
+
+    public function program()
+    {
+        return $this->belongsTo(\App\Models\Program::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(\App\Models\Role::class);
+    }
 }
