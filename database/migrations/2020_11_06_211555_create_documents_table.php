@@ -16,7 +16,7 @@ class CreateDocumentsTable extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->unsignedMediumInteger('id', true);
             $table->unsignedTinyInteger('document_type_id');
-            $table->string('document')->unique('unique_documents');
+            $table->string('document');
             $table->timestamps();
 
             $table->engine = 'InnoDB';
