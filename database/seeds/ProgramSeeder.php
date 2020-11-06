@@ -11,6 +11,10 @@ class ProgramSeeder extends Seeder
      */
     public function run()
     {
-        //
+        \App\Models\Program::create([
+            'faculty_id' => 1,
+            'code' => '115',
+            'name' => 'ingeniería de sistemas'
+        ]);
     }
 }
