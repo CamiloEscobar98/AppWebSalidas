@@ -19,7 +19,10 @@ class User extends Authenticatable
         'email',
         'address',
         'phone',
-        'birthday'
+        'birthday',
+        'document_id',
+        'image_id',
+        'program_id',
     ];
 
     protected $hidden = [
@@ -50,6 +53,49 @@ class User extends Authenticatable
     {
         if ($this->roles()->where('name', $role)->first()) {
             return true;
+        }
+        return false;
+    }
+
+    public function hasRoleSession($role)
+    {
+        $aux = $this->roles()->where('name', $role)->first();
+        if ($aux) {
+            if ($aux->name == session('role')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function hasAnyRole($roles)
+    {
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if ($this->hasRole($role)) {
+                    return true;
+                }
+            }
+        } else {
+            if ($this->hasRole($roles)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function hasAnyRoleSession($roles)
+    {
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if ($this->hasRoleSession($role)) {
+                    return true;
+                }
+            }
+        } else {
+            if ($this->hasRoleSession($roles)) {
+                return true;
+            }
         }
         return false;
     }

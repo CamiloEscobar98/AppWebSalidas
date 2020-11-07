@@ -13,9 +13,10 @@ class CheckRole
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, $roles)
     {
-        if (session('role') == $role) {
+        $usuario = \App\User::find(Auth()->user()->id);
+        if ($usuario->hasAnyRoleSession($roles)) {
             return $next($request);
         }
         return redirect()->route('home');
