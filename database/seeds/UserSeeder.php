@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
                 'document' => '1090522152'
             ])->id,
             'image_id' => \App\Models\ImageProfile::create([
-                'image' => 'default.jpg',
+                'image' => 'default.png',
                 'url' => 'storage/images/'
             ])->id
         ]);
