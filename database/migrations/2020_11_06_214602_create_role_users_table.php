@@ -17,7 +17,6 @@ class CreateRoleUsersTable extends Migration
             $table->unsignedBigInteger('id', true);
             $table->unsignedMediumInteger('user_id');
             $table->unsignedTinyInteger('role_id');
-            $table->timestamps();
 
             $table->engine = 'InnoDB';
         });

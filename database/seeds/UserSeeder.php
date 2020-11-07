@@ -11,7 +11,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        \App\User::create([
+        $usuario = \App\User::create([
             'name' => 'andrés camilo',
             'lastname' => 'yáñez escobar',
             'code' => '1151505',
@@ -27,5 +27,9 @@ class UserSeeder extends Seeder
                 'url' => 'storage/images/'
             ])->id
         ]);
+
+        $usuario->roles()->attach(1);
+
+        factory(\App\User::class, 20)->create();
     }
 }
