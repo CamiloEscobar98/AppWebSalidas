@@ -37,12 +37,12 @@ class UserController extends Controller
         ];
         $validated = $request->validate($rules, [], $attributes);
         $usuario = \App\User::find(Auth()->user()->id);
-        $usuario->name = $validated['name'];
-        $usuario->lastname = $validated['lastname'];
+        $usuario->name = mb_strtolower($validated['name'], 'UTF-8');
+        $usuario->lastname = mb_strtolower($validated['lastname'], 'UTF-8');
         $usuario->code = $validated['code'];
-        $usuario->emailu = $validated['emailu'];
-        $usuario->email = $validated['email'];
-        $usuario->address = $validated['address'];
+        $usuario->emailu = mb_strtolower($validated['emailu'], 'UTF-8');
+        $usuario->email = mb_strtolower($validated['email'], 'UTF-8');
+        $usuario->address = mb_strtolower($validated['address'], 'UTF-8');
         $usuario->phone = $validated['phone'];
         $usuario->birthday = $validated['birthday'];
         $usuario->program_id = $validated['program_id'];
@@ -50,7 +50,7 @@ class UserController extends Controller
         $usuario->document->document_type_id = $validated['document_type_id'];
         $usuario->document->save();
         $usuario->save();
-        // return $validated;
+        // return mb_strtolower($validated['name'], 'UTF-8');
         return back()->with('update_complete', true);
     }
 
@@ -87,5 +87,10 @@ class UserController extends Controller
         $usuario->save();
         return back()->with('update-password', true);
         // return $validated;
+    }
+
+    public function studentsList()
+    {
+        return view('auth.lists.students');
     }
 }

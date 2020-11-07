@@ -21,6 +21,7 @@ Route::get('/', function () {
 Route::put('/update-user', 'Auth\UserController@update')->name('user.update');
 Route::patch('/update-user-photo', 'Auth\UserController@updatePhoto')->name('user.update-photo');
 Route::patch('/update-user-password', 'Auth\UserController@updatePassword')->name('user.update-password');
+Route::get('/lista-estudiantes', 'Auth\UserController@studentsList')->name('user.students');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
