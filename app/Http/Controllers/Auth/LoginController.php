@@ -37,4 +37,10 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function showLoginForm()
+    {
+        $roles = \App\Models\Role::all();
+        return view('auth.login')->with('roles', $roles);
+    }
 }

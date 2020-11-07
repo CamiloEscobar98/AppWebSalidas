@@ -1,0 +1,35 @@
+#content-body{
+    min-height: calc(100vh);
+}
+
+#login{
+    background-image: url(https://divisist2.ufps.edu.co/assets/img/bg/19.jpg);
+    width: 100%;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.bg-appsalidas{
+    background-color: $appsalidas;
+    color: white;
+}
+
+.btn-appsalidas{
+    background-color: $appsalidas;
+    color: white;
+}
+
+.btn-appsalidas:hover{
+    background-color: #8b2113;
+    color: white;
+}
+
+.btn-appsalidas2{
+    background-color: #8b2113;
+    color: white;
+}
+
+.btn-appsalidas2:hover{
+    background-color: #be3928;
+    color: white;
+}

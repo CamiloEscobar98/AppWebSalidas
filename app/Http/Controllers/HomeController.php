@@ -23,6 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $programs = \App\Models\Program::all();
+        $document_types = \App\Models\Document_type::all();
+        return view('home')->with('document_types', $document_types)->with('programs', $programs);
     }
 }

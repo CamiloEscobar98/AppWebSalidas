@@ -31,7 +31,7 @@ class User extends Authenticatable
         return $this->belongsTo(\App\Models\Document::class);
     }
 
-    public function image_profile()
+    public function image()
     {
         return $this->belongsTo(\App\Models\ImageProfile::class);
     }

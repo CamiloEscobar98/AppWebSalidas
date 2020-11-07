@@ -15,8 +15,8 @@ class Document extends Model
         return $this->hasOne(\App\User::class);
     }
 
-    public function document_type()
+    public function dtype()
     {
-        return $this->belongsTo(\App\Models\Document_type::class);
+        return $this->belongsTo(\App\Models\Document_type::class, 'document_type_id');
     }
 }
