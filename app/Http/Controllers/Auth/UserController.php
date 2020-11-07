@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('checkRole:administrador')->only('studentsList');
+
+    }
+
     public function update(Request $request)
     {
         $rules = [
