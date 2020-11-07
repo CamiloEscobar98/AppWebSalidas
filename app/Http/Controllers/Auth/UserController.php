@@ -153,4 +153,14 @@ class UserController extends Controller
         return back()->with('register_failed', 'No se ha podido registrar correctamente');
         // return 'R estudiante';
     }
+    public function destroyStudent(Request $request)
+    {
+        if ($request->ajax()) {
+            $usuario = \App\User::find($request->student_id);
+            $aux = $usuario;
+            if ($usuario->delete()) {
+                return 'Se ha eliminado correctamente a ' . $aux->name . ' ' . $aux->lastname;
+            }
+        }
+    }
 }

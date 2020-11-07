@@ -23,6 +23,7 @@ Route::patch('/update-user-photo', 'Auth\UserController@updatePhoto')->name('use
 Route::patch('/update-user-password', 'Auth\UserController@updatePassword')->name('user.update-password');
 Route::get('/lista-estudiantes', 'Auth\UserController@studentsList')->name('user.students');
 Route::post('/register-student', 'Auth\UserController@registerStudent')->name('user.register-student');
+Route::delete('/delete-student', 'Auth\UserController@destroyStudent')->name('user.delete-student');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

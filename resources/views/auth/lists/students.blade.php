@@ -122,7 +122,7 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($students as $student)
-                                        <tr class="text-center">
+                                        <tr class="text-center" id="fila{{ $loop->iteration }}">
                                             <td>{{ $student->code }}</td>
                                             <td>{{ $student->name }} {{ $student->lastname }}</td>
                                             <td>{{ $student->emailu }}</td>
@@ -130,7 +130,9 @@
                                             <td>
                                                 <div class="btn-group w-100">
                                                     <button class="btn btn-info  mr-2">Visualizar</button>
-                                                    <button class="btn btn-danger">Eliminar</button>
+                                                    <button class="btn btn-danger delete-student"
+                                                        data-tr="{{ $loop->iteration }}"
+                                                        data-id="{{ $student->id }}">Eliminar</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -158,4 +160,40 @@
             </div>
         </div>
     </div>
+
+@endsection
+@section('scripts')
+<script>
+    $('.delete-student').on('click', function() {
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡El estudiante será eliminado!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Si, eliminalo!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var id = $(this).attr('data-id');
+                axios.post("{{ route('user.delete-student') }}", {
+                    _method: 'delete',
+                    student_id: id,
+                }).then(response => {
+                    Swal.fire(
+                        'Eliminado!',
+                        response.data,
+                        'success'
+                    )
+
+                });
+                var fila = $(this).attr('data-tr');
+                $("#fila" + fila).remove();
+            }
+        })
+    });
+
+</script>
 @endsection
