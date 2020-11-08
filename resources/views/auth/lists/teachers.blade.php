@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Listas-estudiantes')
+@section('title', 'Listas-docentes')
 @section('content')
     <div class="container-fluid">
         @if (session()->has('register_complete'))
@@ -26,13 +26,13 @@
             <div class="col-md-3 mt-2">
                 <div class="card">
                     <div class="card-header bg-appsalidas py-4">
-                        <h4 class="my-0 font-weight-bold">Registrar Estudiante</h4>
+                        <h4 class="my-0 font-weight-bold">Registrar Docente</h4>
                     </div>
                     <div class="card-body">
                         <h6 class="card-title text-right font-weight-bold">Por favor llene todas las credenciales</h6>
                         <form action="{{ route('user.register') }}" method="post">
                             @csrf
-                            <input type="hidden" name="role_id" value="2">
+                            <input type="hidden" name="role_id" value="3">
                             <div class="form-group">
                                 <label class="font-weight-bold">Programa al que pertenece:</label>
                                 <select name="program_id" class="custom-select">
@@ -116,10 +116,10 @@
             <div class="col-md-9 mt-2">
                 <div class="card">
                     <div class="card-header bg-appsalidas py-4">
-                        <h4 class="my-0 font-weight-bold">Lista de Estudiantes</h4>
+                        <h4 class="my-0 font-weight-bold">Lista de Docentes</h4>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Acá puede visualizar todo los estudiantes que se encuentran registrados.</h5>
+                        <h5 class="card-title">Acá puede visualizar todo los docentes que se encuentran registrados.</h5>
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead class="thead-inverse bg-appsalidas">
@@ -132,19 +132,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($students as $student)
+                                    @forelse ($teachers as $teacher)
                                         <tr class="text-center" id="fila{{ $loop->iteration }}">
-                                            <td>{{ $student->code }}</td>
-                                            <td class="text-capitalize">{{ $student->name }} {{ $student->lastname }}</td>
-                                            <td>{{ $student->emailu }}</td>
-                                            <td class="text-capitalize">{{ $student->program->name }}</td>
+                                            <td>{{ $teacher->code }}</td>
+                                            <td class="text-capitalize">{{ $teacher->name }} {{ $teacher->lastname }}</td>
+                                            <td>{{ $teacher->emailu }}</td>
+                                            <td class="text-capitalize">{{ $teacher->program->name }}</td>
                                             <td>
                                                 <div class="btn-group w-100">
-                                                    <a href="{{ route('user.show-student', $student) }}"
+                                                    <a href="{{ route('user.show-teacher', $teacher) }}"
                                                         class="btn btn-info  mr-2">Visualizar</a>
                                                     <button class="btn btn-danger delete-student"
                                                         data-tr="{{ $loop->iteration }}"
-                                                        data-id="{{ $student->id }}">Eliminar</button>
+                                                        data-id="{{ $teacher->id }}">Eliminar</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -162,7 +162,7 @@
                                     </tr>
                                 </tfoot>
                             </table>
-                            {{ $students->links() }}
+                            {{ $teachers->links() }}
                         </div>
                     </div>
                     <div class="card-footer bg-appsalidas py-4"></div>
@@ -177,6 +177,7 @@
 @section('scripts')
 <script>
     $('.delete-student').on('click', function() {
+
         Swal.fire({
             title: '¿Estás seguro?',
             text: "¡El estudiante será eliminado!",
@@ -203,7 +204,7 @@
                 var fila = $(this).attr('data-tr');
                 $("#fila" + fila).remove();
             }
-        });
+        })
     });
 
 </script>

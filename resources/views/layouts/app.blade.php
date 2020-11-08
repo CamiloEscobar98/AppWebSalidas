@@ -35,6 +35,9 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         @auth
+                            <li class="nav-item">
+                                <a href="{{ route('home') }}" class="nav-link">Perfil</a>
+                            </li>
                             @if (session('role') == 'administrador')
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
@@ -42,7 +45,7 @@
                                     </a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="{{ route('user.students') }}">Estudiantes</a>
-                                        <a class="dropdown-item" href="#">Docentes</a>
+                                        <a class="dropdown-item" href="{{ route('user.teachers') }}">Docentes</a>
                                         <a class="dropdown-item" href="#">Directores</a>
                                     </div>
                                 </li>
@@ -70,7 +73,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                                                 document.getElementById('logout-form').submit();">
+                                                                                                                         document.getElementById('logout-form').submit();">
                                         Cerrar Sesión
                                     </a>
 
