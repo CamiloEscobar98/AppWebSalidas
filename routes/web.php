@@ -18,19 +18,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::put('/update-user', 'Auth\UserController@update')->name('user.update');
-Route::post('/register-user', 'Auth\UserController@register')->name('user.register');
-Route::delete('/delete-user', 'Auth\UserController@destroy')->name('user.delete');
-Route::patch('/update-user-photo', 'Auth\UserController@updatePhoto')->name('user.update-photo');
-Route::patch('/update-user-password', 'Auth\UserController@updatePassword')->name('user.update-password');
-Route::delete('/delete-user-photo', 'Auth\UserController@deletePhoto')->name('user.delete-photo');
+Route::put('/user/update', 'Auth\UserController@update')->name('user.update');
+Route::post('/user/register', 'Auth\UserController@register')->name('user.register');
+Route::delete('/user/delete', 'Auth\UserController@destroy')->name('user.delete');
+Route::patch('/user/update-photo', 'Auth\UserController@updatePhoto')->name('user.update-photo');
+Route::patch('/user/update-password', 'Auth\UserController@updatePassword')->name('user.update-password');
+Route::delete('/user/delete-photo', 'Auth\UserController@deletePhoto')->name('user.delete-photo');
 
-Route::get('/lista-estudiantes', 'Auth\UserController@studentsList')->name('user.students');
-Route::get('/perfil-estudiante/{student}', 'Auth\UserController@showStudent')->name('user.show-student');
-Route::get('/lista-docentes', 'Auth\UserController@teachersList')->name('user.teachers');
-Route::get('/perfil-docente/{teacher}', 'Auth\UserController@showTeacher')->name('user.show-teacher');
-Route::get('/lista-directores', 'Auth\UserController@directorsList')->name('user.directors');
-Route::get('/perfil-director/{director}', 'Auth\UserController@showDirector')->name('user.show-director');
+Route::get('/lista-estudiantes', 'HomeController@studentsList')->name('students');
+Route::get('/lista-docentes', 'HomeController@teachersList')->name('teachers');
+Route::get('/lista-directores', 'HomeController@directorsList')->name('directors');
+Route::get('/lista-facultades', 'HomeController@facultiesList')->name('faculties');
+
+
+Route::get('/perfil-docente/{teacher}', 'HomeController@showTeacher')->name('user.show-teacher');
+Route::get('/perfil-estudiante/{student}', 'HomeController@showStudent')->name('user.show-student');
+Route::get('/perfil-director/{director}', 'HomeController@showDirector')->name('user.show-director');
+Route::get('/perfil-facultad/{faculty}', 'HomeController@showDirector')->name('user.show-faculty');
+
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('user.home');

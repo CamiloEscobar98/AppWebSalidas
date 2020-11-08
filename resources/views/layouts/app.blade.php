@@ -36,18 +36,24 @@
                     <ul class="navbar-nav mr-auto">
                         @auth
                             <li class="nav-item">
-                                <a href="{{ route('home') }}" class="nav-link">Perfil</a>
+                                <a href="{{ route('user.home') }}" class="nav-link">Perfil</a>
                             </li>
                             @if (session('role') == 'administrador')
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                                        Listas
+                                        Listas de Usuarios
                                     </a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{ route('user.students') }}">Estudiantes</a>
-                                        <a class="dropdown-item" href="{{ route('user.teachers') }}">Docentes</a>
-                                        <a class="dropdown-item" href="{{ route('user.directors') }}">Directores</a>
+                                        <a class="dropdown-item" href="{{ route('students') }}">Estudiantes</a>
+                                        <a class="dropdown-item" href="{{ route('teachers') }}">Docentes</a>
+                                        <a class="dropdown-item" href="{{ route('directors') }}">Directores</a>
                                     </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('faculties') }}" class="nav-link">Facultades</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('user.home') }}" class="nav-link">Programas</a>
                                 </li>
                             @endif
                         @endauth
@@ -73,7 +79,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                                                             document.getElementById('logout-form').submit();">
+                                                                                                                                                                 document.getElementById('logout-form').submit();">
                                         Cerrar Sesión
                                     </a>
 

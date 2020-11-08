@@ -16,7 +16,7 @@ class Program extends Model
         return $this->belongsTo(\App\Models\Faculty::class);
     }
 
-    public function user()
+    public function users()
     {
         return $this->hasMany(\App\User::class);
     }
