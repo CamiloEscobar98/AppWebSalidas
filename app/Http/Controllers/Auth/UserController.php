@@ -16,6 +16,54 @@ class UserController extends Controller
         // $this->middleware('checkRole:administrador')->only('studentsList');
     }
 
+    public function register(Request $request)
+    {
+        // return $request->all();
+        $rules = [
+            'name' => ['required', 'string'],
+            'lastname' => ['required', 'string'],
+            'code' => ['required', 'unique:users,code'],
+            'emailu' => ['required', 'email', 'unique:users,emailu'],
+            'program_id' => ['required', 'exists:programs,id', 'max:2'],
+            'document_type_id' => ['required', 'exists:document_types,id', 'max:1'],
+            'document' => ['required', 'unique:documents,document']
+        ];
+        $attributes = [
+            'name' => 'Nombres',
+            'lastname' => 'Apellidos',
+            'code' => 'Código',
+            'emailu' => 'Correo electrónico Institucional',
+            'program_id' => 'Programa',
+            'document' => 'Documento',
+            'document_type_id' => 'Tipo de Documento'
+        ];
+        $program = \App\Models\Program::find($request->program_id);
+        $validated = $request->validate($rules, [], $attributes);
+        $document = \App\Models\Document::create([
+            'document' => $validated['document'],
+            'document_type_id' =>  $validated['document_type_id']
+        ]);
+        $user = \App\User::create([
+            'name' => mb_strtolower($validated['name'], 'UTF-8'),
+            'lastname' => mb_strtolower($validated['lastname'], 'UTF-8'),
+            'emailu' => mb_strtolower($validated['emailu'], 'UTF-8'),
+            'code' => $validated['code'],
+            'document_id' => $document->id,
+            'password' => bcrypt('1234'),
+            'program_id' => $validated['program_id'],
+            'image_id' => \App\Models\ImageProfile::create([
+                'image' => 'default.png',
+                'url' => 'storage/images'
+            ])->id
+        ]);
+        $user->roles()->attach($request->role_id);
+        if ($user) {
+            return back()->with('register_complete', 'Se ha registrado correctamente al estudiante ' . $user->name . ' ' . $user->lastname);
+        }
+        return back()->with('register_failed', 'No se ha podido registrar correctamente');
+        // return 'R estudiante';
+    }
+
     public function update(Request $request)
     {
         $usuario = \App\User::where('emailu', $request->emailu)->first();
@@ -119,65 +167,7 @@ class UserController extends Controller
         }
     }
 
-    // Students
-    public function studentsList()
-    {
-        $students = \App\Models\Role::find(2)->users()->paginate(8);
-        $programs = \App\Models\Program::orderBy('faculty_id', 'ASC')->get();
-        $dtypes = \App\Models\Document_type::all();
-        // return $students;
-        return view('auth.lists.students')->with('students', $students)->with('programs', $programs)->with('document_types', $dtypes);
-    }
-
-    public function register(Request $request)
-    {
-        // return $request->all();
-        $rules = [
-            'name' => ['required', 'string'],
-            'lastname' => ['required', 'string'],
-            'code' => ['required', 'unique:users,code'],
-            'emailu' => ['required', 'email', 'unique:users,emailu'],
-            'program_id' => ['required', 'exists:programs,id', 'max:2'],
-            'document_type_id' => ['required', 'exists:document_types,id', 'max:1'],
-            'document' => ['required', 'unique:documents,document']
-        ];
-        $attributes = [
-            'name' => 'Nombres',
-            'lastname' => 'Apellidos',
-            'code' => 'Código',
-            'emailu' => 'Correo electrónico Institucional',
-            'program_id' => 'Programa',
-            'document' => 'Documento',
-            'document_type_id' => 'Tipo de Documento'
-        ];
-        $program = \App\Models\Program::find($request->program_id);
-        $validated = $request->validate($rules, [], $attributes);
-        $document = \App\Models\Document::create([
-            'document' => $validated['document'],
-            'document_type_id' =>  $validated['document_type_id']
-        ]);
-        $user = \App\User::create([
-            'name' => mb_strtolower($validated['name'], 'UTF-8'),
-            'lastname' => mb_strtolower($validated['lastname'], 'UTF-8'),
-            'emailu' => mb_strtolower($validated['emailu'], 'UTF-8'),
-            'code' => $validated['code'],
-            'document_id' => $document->id,
-            'password' => bcrypt('1234'),
-            'program_id' => $validated['program_id'],
-            'image_id' => \App\Models\ImageProfile::create([
-                'image' => 'default.png',
-                'url' => 'storage/images'
-            ])->id
-        ]);
-        $user->roles()->attach($request->role_id);
-        if ($user) {
-            return back()->with('register_complete', 'Se ha registrado correctamente al estudiante ' . $user->name . ' ' . $user->lastname);
-        }
-        return back()->with('register_failed', 'No se ha podido registrar correctamente');
-        // return 'R estudiante';
-    }
-
-    public function destroyStudent(Request $request)
+    public function destroy(Request $request)
     {
         if ($request->ajax()) {
             $usuario = \App\User::find($request->student_id);
@@ -188,14 +178,16 @@ class UserController extends Controller
         }
     }
 
-    public function showStudent(\App\User $student)
+    // Lists
+    public function studentsList()
     {
-        $programs = \App\Models\Program::all();
+        $students = \App\Models\Role::find(2)->users()->paginate(8);
+        $programs = \App\Models\Program::orderBy('faculty_id', 'ASC')->get();
         $dtypes = \App\Models\Document_type::all();
-        return view('auth.profiles.student')->with('student', $student)->with('programs', $programs)->with('document_types', $dtypes);
+        // return $students;
+        return view('auth.lists.students')->with('students', $students)->with('programs', $programs)->with('document_types', $dtypes);
     }
 
-    // Teachers
     public function teachersList()
     {
         $teachers = \App\Models\Role::find(3)->users()->paginate(8);
@@ -204,11 +196,35 @@ class UserController extends Controller
         // return $teachers;
         return view('auth.lists.teachers')->with('teachers', $teachers)->with('programs', $programs)->with('document_types', $dtypes);
     }
+    public function directorsList()
+    {
+        $directors = \App\Models\Role::find(4)->users()->paginate(8);
+        $programs = \App\Models\Program::orderBy('faculty_id', 'ASC')->get();
+        $dtypes = \App\Models\Document_type::all();
+        // return $directors;
+        return view('auth.lists.directors')->with('directors', $directors)->with('programs', $programs)->with('document_types', $dtypes);
+    }
+
+    // Profiles
+
+    public function showStudent(\App\User $student)
+    {
+        $programs = \App\Models\Program::all();
+        $dtypes = \App\Models\Document_type::all();
+        return view('auth.profiles.student')->with('student', $student)->with('programs', $programs)->with('document_types', $dtypes);
+    }
 
     public function showTeacher(\App\User $teacher)
     {
         $programs = \App\Models\Program::all();
         $dtypes = \App\Models\Document_type::all();
         return view('auth.profiles.teacher')->with('teacher', $teacher)->with('programs', $programs)->with('document_types', $dtypes);
+    }
+
+    public function showDirector(\App\User $director)
+    {
+        $programs = \App\Models\Program::all();
+        $dtypes = \App\Models\Document_type::all();
+        return view('auth.profiles.director')->with('director', $director)->with('programs', $programs)->with('document_types', $dtypes);
     }
 }

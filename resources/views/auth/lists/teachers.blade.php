@@ -125,7 +125,7 @@
                                 <thead class="thead-inverse bg-appsalidas">
                                     <tr class="text-center">
                                         <th class="font-weight-bold w-auto">Código</th>
-                                        <th class="font-weight-bold w-25">Estudiante</th>
+                                        <th class="font-weight-bold w-25">Docente</th>
                                         <th class="font-weight-bold w-auto">Correo Institucional</th>
                                         <th class="font-weight-bold w-25">Programa</th>
                                         <th class="font-weight-bold w-auto">...</th>
@@ -142,20 +142,19 @@
                                                 <div class="btn-group w-100">
                                                     <a href="{{ route('user.show-teacher', $teacher) }}"
                                                         class="btn btn-info  mr-2">Visualizar</a>
-                                                    <button class="btn btn-danger delete-student"
-                                                        data-tr="{{ $loop->iteration }}"
+                                                    <button class="btn btn-danger delete-user" data-tr="{{ $loop->iteration }}"
                                                         data-id="{{ $teacher->id }}">Eliminar</button>
                                                 </div>
                                             </td>
                                         </tr>
                                     @empty
-                                        No hay registrados de estudiantes.
+                                        No hay registrados de docentes.
                                     @endforelse
                                 </tbody>
                                 <tfoot class="bg-appsalidas">
                                     <tr class="text-center">
                                         <th class="font-weight-bold">Código</th>
-                                        <th class="font-weight-bold">Estudiante</th>
+                                        <th class="font-weight-bold">Docente</th>
                                         <th class="font-weight-bold">Correo Institucional</th>
                                         <th class="font-weight-bold">Programa</th>
                                         <th>...</th>
@@ -176,11 +175,11 @@
 @endsection
 @section('scripts')
 <script>
-    $('.delete-student').on('click', function() {
+    $('.delete-user').on('click', function() {
 
         Swal.fire({
             title: '¿Estás seguro?',
-            text: "¡El estudiante será eliminado!",
+            text: "¡El docente será eliminado!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -190,7 +189,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 var id = $(this).attr('data-id');
-                axios.post("{{ route('user.delete-student') }}", {
+                axios.post("{{ route('user.delete') }}", {
                     _method: 'delete',
                     student_id: id,
                 }).then(response => {

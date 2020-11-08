@@ -46,7 +46,7 @@
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="{{ route('user.students') }}">Estudiantes</a>
                                         <a class="dropdown-item" href="{{ route('user.teachers') }}">Docentes</a>
-                                        <a class="dropdown-item" href="#">Directores</a>
+                                        <a class="dropdown-item" href="{{ route('user.directors') }}">Directores</a>
                                     </div>
                                 </li>
                             @endif
@@ -73,7 +73,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                                                         document.getElementById('logout-form').submit();">
+                                                                                                                             document.getElementById('logout-form').submit();">
                                         Cerrar Sesión
                                     </a>
 
