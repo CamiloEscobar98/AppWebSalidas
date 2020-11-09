@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -21,6 +22,7 @@ class HomeController extends Controller
     // Lists
     public function studentsList()
     {
+        request()->user()->authorizeRoles(['director', 'administrador']);
         $students = \App\Models\Role::find(2)->users()->orderBy('name', 'ASC')->paginate(8);
         $programs = \App\Models\Program::orderBy('faculty_id', 'ASC')->get();
         $dtypes = \App\Models\Document_type::all();
@@ -30,6 +32,7 @@ class HomeController extends Controller
 
     public function teachersList()
     {
+        request()->user()->authorizeRoles(['director', 'administrador']);
         $teachers = \App\Models\Role::find(3)->users()->orderBy('name', 'ASC')->paginate(8);
         $programs = \App\Models\Program::orderBy('faculty_id', 'ASC')->get();
         $dtypes = \App\Models\Document_type::all();
@@ -38,6 +41,7 @@ class HomeController extends Controller
     }
     public function directorsList()
     {
+        request()->user()->authorizeRoles(['director', 'administrador']);
         $directors = \App\Models\Role::find(4)->users()->orderBy('name', 'ASC')->paginate(8);
         $programs = \App\Models\Program::orderBy('faculty_id', 'ASC')->get();
         $dtypes = \App\Models\Document_type::all();
@@ -47,12 +51,14 @@ class HomeController extends Controller
 
     public function facultiesList()
     {
+        request()->user()->authorizeRoles(['director', 'administrador']);
         $faculties = \App\Models\Faculty::paginate(8);
         return view('auth.lists.faculties')->with('faculties', $faculties);
     }
 
     public function programsList()
     {
+        request()->user()->authorizeRoles(['director', 'administrador']);
         $faculties = \App\Models\Faculty::all();
         $programs = \App\Models\Program::paginate(8);
         return view('auth.lists.programs')->with('programs', $programs)->with('faculties', $faculties);
@@ -62,6 +68,7 @@ class HomeController extends Controller
 
     public function showStudent(\App\User $student)
     {
+        request()->user()->authorizeRoles(['director', 'administrador']);
         $programs = \App\Models\Program::all();
         $dtypes = \App\Models\Document_type::all();
         return view('auth.profiles.student')->with('student', $student)->with('programs', $programs)->with('document_types', $dtypes);
@@ -69,6 +76,7 @@ class HomeController extends Controller
 
     public function showTeacher(\App\User $teacher)
     {
+        request()->user()->authorizeRoles(['director', 'administrador']);
         $programs = \App\Models\Program::all();
         $dtypes = \App\Models\Document_type::all();
         return view('auth.profiles.teacher')->with('teacher', $teacher)->with('programs', $programs)->with('document_types', $dtypes);
@@ -76,6 +84,7 @@ class HomeController extends Controller
 
     public function showDirector(\App\User $director)
     {
+        request()->user()->authorizeRoles(['director', 'administrador']);
         $programs = \App\Models\Program::all();
         $dtypes = \App\Models\Document_type::all();
         return view('auth.profiles.director')->with('director', $director)->with('programs', $programs)->with('document_types', $dtypes);
@@ -83,12 +92,14 @@ class HomeController extends Controller
 
     public function showFaculty(\App\Models\Faculty $faculty)
     {
+        request()->user()->authorizeRoles(['director', 'administrador']);
         $programs = $faculty->programs()->paginate(5);
         return view('auth.profiles.faculty')->with('faculty', $faculty)->with('programs', $programs);
     }
 
     public function showProgram(\App\Models\Program $program)
     {
+        request()->user()->authorizeRoles(['director', 'administrador']);
         $program = \App\Models\Program::find($program->id);
         $faculties = \App\Models\Faculty::all();
         $students = $program->studentsPaginate(5);

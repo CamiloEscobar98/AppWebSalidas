@@ -86,8 +86,8 @@ class User extends Authenticatable
 
     public function authorizeRoles($roles)
     {
-        if (!$this->hasAnyRole($roles))
-            return redirect()->route('home');
+        abort_unless($this->hasAnyRole($roles), 401);
+        return true;
     }
 
     public function hasAnyRoleSession($roles)
