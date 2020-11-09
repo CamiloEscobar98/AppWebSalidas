@@ -55,12 +55,14 @@
                         <form action="{{ route('user.update') }}" method="post" class="my-4">
                             @csrf
                             @method('put')
+                            <input type="hidden" name="id" value="{{ Auth::user()->id }}">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold">Nombres:</label>
                                         <input type="text" name="name" class="form-control text-capitalize"
-                                            value="{{ Auth::user()->name }}" aria-describedby="helpId">
+                                            value="{{ Auth::user()->name }}" aria-describedby="helpId"
+                                            {{ session('role') != 'administrador' ? 'disabled' : '' }}>
                                         @error('name')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
@@ -68,7 +70,8 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Apellidos:</label>
                                         <input type="text" name="lastname" class="form-control text-capitalize"
-                                            value="{{ Auth::user()->lastname }}" aria-describedby="helpId">
+                                            value="{{ Auth::user()->lastname }}" aria-describedby="helpId"
+                                            {{ session('role') != 'administrador' ? 'disabled' : '' }}>
                                         @error('lastname')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
@@ -76,7 +79,8 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Código:</label>
                                         <input type="text" name="code" class="form-control" value="{{ Auth::user()->code }}"
-                                            aria-describedby="helpId" maxlength="7">
+                                            aria-describedby="helpId" maxlength="7"
+                                            {{ session('role') != 'administrador' ? 'disabled' : '' }}>
                                         @error('code')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
@@ -92,14 +96,17 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Correo universitario:</label>
                                         <input type="text" name="emailu" class="form-control"
-                                            value="{{ Auth::user()->emailu }}" aria-describedby="helpId">
+                                            value="{{ Auth::user()->emailu }}" aria-describedby="helpId"
+                                            {{ session('role') != 'administrador' ? 'disabled' : '' }}>
                                         @error('emailu')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="font-weight-bold">Programa al que pertenece:</label>
-                                        <select class="custom-select" name="program_id">
+
+                                        <select class="custom-select text-capitalize text-dark" name="program_id"
+                                            {{ session('role') != 'administrador' ? 'disabled' : '' }}>
                                             <option value="-1">Seleccione un programa</option>
                                             @foreach ($programs as $program)
                                                 @if (Auth::user()->program->code == $program->code)
@@ -139,14 +146,16 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Documento:</label>
                                         <input type="text" name="document" class="form-control text-capitalize"
-                                            value="{{ Auth::user()->document->document }}" aria-describedby="helpId">
+                                            value="{{ Auth::user()->document->document }}" aria-describedby="helpId"
+                                            {{ session('role') != 'administrador' ? 'disabled' : '' }}>
                                         @error('document')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="font-weight-bold">Tipo de Documento:</label>
-                                        <select class="custom-select" name="document_type_id">
+                                        <select class="custom-select text-capitalize text-dark" name="document_type_id"
+                                            {{ session('role') != 'administrador' ? 'disabled' : '' }}>
                                             <option value="-1">Seleccione un Tipo de Documento</option>
                                             @foreach ($document_types as $doct_type)
                                                 @if (Auth::user()->document->dtype->type == $doct_type->type)

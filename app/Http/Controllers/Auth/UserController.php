@@ -68,47 +68,52 @@ class UserController extends Controller
     {
         $usuario = \App\User::find($request->id);
         $rules = [
-            'name' => ['required', 'string'],
-            'lastname' => ['required', 'string'],
-            'code' => ['required', 'unique:users,code,' . $usuario->id],
-            'emailu' => ['required', 'email', 'unique:users,emailu,' . $usuario->id],
             'email' => ['required', 'email'],
             'address' => ['required', 'string'],
             'phone' => ['required', 'string'],
-            'birthday' => ['required', 'date'],
-            'program_id' => ['required', 'exists:programs,id', 'max:2'],
-            'document_type_id' => ['required', 'exists:document_types,id', 'max:1'],
-            'document' => ['required', 'unique:documents,document,' . $usuario->document->id]
+            'birthday' => ['required', 'date']
         ];
         $attributes = [
-            'name' => 'Nombres',
-            'lastname' => 'Apellidos',
-            'code' => 'Código',
-            'emailu' => 'Correo electrónico Institucional',
             'email' => 'Correo electrónico Personal',
             'address' => 'Dirección de Residencia',
             'phone' => 'Teléfono Celular',
             'birthday' => 'Fecha de Nacimiento',
-            'program_id' => 'Programa',
-            'document' => 'Documento',
-            'document_type_id' => 'Tipo de Documento'
         ];
+        if (session('role') == 'administrador') {
+            $rules['emailu'] = ['required', 'email', 'unique:users,emailu,' . $usuario->id];
+            $rules['code'] = ['required', 'unique:users,code,' . $usuario->id];
+            $rules['name'] = ['required', 'string'];
+            $rules['lastname'] =  ['required', 'string'];
+            $rules['document_type_id'] = ['required', 'exists:document_types,id', 'max:1'];
+            $rules['document'] = ['required', 'unique:documents,document,' . $usuario->document->id];
+            $rules['program_id'] = ['required', 'exists:programs,id', 'max:2'];
+
+            $attributes['program_i'] = 'Programa';
+            $attributes['document'] = 'Documento';
+            $attributes['document_type_id'] = 'Tipo de Documento';
+            $attributes['name'] = 'Nombres';
+            $attributes['lastname'] = 'Apellidos';
+            $attributes['code'] = 'Código';
+            $attributes['emailu'] = 'Correo electrónico Institucional';
+        }
         $validated = $request->validate($rules, [], $attributes);
         $usuario = \App\User::find($usuario->id);
-        $usuario->name = mb_strtolower($validated['name'], 'UTF-8');
-        $usuario->lastname = mb_strtolower($validated['lastname'], 'UTF-8');
-        $usuario->code = $validated['code'];
-        $usuario->emailu = mb_strtolower($validated['emailu'], 'UTF-8');
+
         $usuario->email = mb_strtolower($validated['email'], 'UTF-8');
         $usuario->address = mb_strtolower($validated['address'], 'UTF-8');
         $usuario->phone = $validated['phone'];
         $usuario->birthday = $validated['birthday'];
-        $usuario->program_id = $validated['program_id'];
-        $usuario->document->document = $validated['document'];
-        $usuario->document->document_type_id = $validated['document_type_id'];
-        $usuario->document->save();
+        if (session('role') == 'administrador') {
+            $usuario->name = mb_strtolower($validated['name'], 'UTF-8');
+            $usuario->lastname = mb_strtolower($validated['lastname'], 'UTF-8');
+            $usuario->code = $validated['code'];
+            $usuario->emailu = mb_strtolower($validated['emailu'], 'UTF-8');
+            $usuario->program_id = $validated['program_id'];
+            $usuario->document->document = $validated['document'];
+            $usuario->document->document_type_id = $validated['document_type_id'];
+            $usuario->document->save();
+        }
         $usuario->save();
-        // return mb_strtolower($validated['name'], 'UTF-8');
         return back()->with('update_complete', true);
     }
 
