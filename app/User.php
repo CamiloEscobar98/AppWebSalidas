@@ -84,6 +84,12 @@ class User extends Authenticatable
         return false;
     }
 
+    public function authorizeRoles($roles)
+    {
+        if (!$this->hasAnyRole($roles))
+            return redirect()->route('home');
+    }
+
     public function hasAnyRoleSession($roles)
     {
         if (is_array($roles)) {
