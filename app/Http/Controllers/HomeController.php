@@ -6,21 +6,11 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
         $programs = \App\Models\Program::all();
@@ -57,8 +47,15 @@ class HomeController extends Controller
 
     public function facultiesList()
     {
-        $faculties = \App\Models\Faculty::paginate(5);
+        $faculties = \App\Models\Faculty::paginate(8);
         return view('auth.lists.faculties')->with('faculties', $faculties);
+    }
+
+    public function programsList()
+    {
+        $faculties = \App\Models\Faculty::all();
+        $programs = \App\Models\Program::paginate(8);
+        return view('auth.lists.programs')->with('programs', $programs)->with('faculties', $faculties);
     }
 
     // Profiles
@@ -82,5 +79,24 @@ class HomeController extends Controller
         $programs = \App\Models\Program::all();
         $dtypes = \App\Models\Document_type::all();
         return view('auth.profiles.director')->with('director', $director)->with('programs', $programs)->with('document_types', $dtypes);
+    }
+
+    public function showFaculty(\App\Models\Faculty $faculty)
+    {
+        $programs = $faculty->programs()->paginate(5);
+        return view('auth.profiles.faculty')->with('faculty', $faculty)->with('programs', $programs);
+    }
+
+    public function showProgram(\App\Models\Program $program)
+    {
+        $program = \App\Models\Program::find($program->id);
+        $faculties = \App\Models\Faculty::all();
+        $students = $program->studentsPaginate(5);
+        $teachers = $program->teachersPaginate(5);
+        return view('auth.profiles.program')
+            ->with('program', $program)
+            ->with('faculties', $faculties)
+            ->with('students', $students)
+            ->with('teachers', $teachers);
     }
 }

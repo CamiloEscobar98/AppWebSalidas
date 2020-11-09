@@ -46,6 +46,7 @@
                             @csrf
                             @method('put')
                             <div class="row">
+                                <input type="hidden" name="id" value="{{ $director->id }}">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold">Nombres:</label>

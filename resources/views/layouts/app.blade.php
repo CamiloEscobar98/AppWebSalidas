@@ -53,7 +53,7 @@
                                     <a href="{{ route('faculties') }}" class="nav-link">Facultades</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('user.home') }}" class="nav-link">Programas</a>
+                                    <a href="{{ route('programs') }}" class="nav-link">Programas</a>
                                 </li>
                             @endif
                         @endauth

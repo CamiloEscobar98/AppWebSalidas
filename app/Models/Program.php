@@ -8,7 +8,8 @@ class Program extends Model
 {
     protected $fillable = [
         'name',
-        'code'
+        'code',
+        'faculty_id'
     ];
 
     public function faculty()
@@ -19,5 +20,33 @@ class Program extends Model
     public function users()
     {
         return $this->hasMany(\App\User::class);
+    }
+
+    public function students()
+    {
+        $role = \App\Models\Role::where('name', 'estudiante')->first();
+        $role;
+        return $role->users()->where('program_id', $this->id)->get();
+    }
+
+    public function studentsPaginate($total)
+    {
+        $role = \App\Models\Role::where('name', 'estudiante')->first();
+        $role;
+        return $role->users()->where('program_id', $this->id)->paginate($total);
+    }
+
+    public function teachers()
+    {
+        $role = \App\Models\Role::where('name', 'docente')->first();
+        $role;
+        return $role->users()->where('program_id', $this->id)->get();
+    }
+
+    public function teachersPaginate($total)
+    {
+        $role = \App\Models\Role::where('name', 'docente')->first();
+        $role;
+        return $role->users()->where('program_id', $this->id)->paginate($total);
     }
 }

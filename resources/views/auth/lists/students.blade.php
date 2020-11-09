@@ -137,7 +137,8 @@
                                             <td>{{ $student->code }}</td>
                                             <td class="text-capitalize">{{ $student->name }} {{ $student->lastname }}</td>
                                             <td>{{ $student->emailu }}</td>
-                                            <td class="text-capitalize">{{ $student->program->name }}</td>
+                                            <td class="text-capitalize"><a href=""
+                                                    class="btn btn-outline-primary">{{ $student->program->name }}</a></td>
                                             <td>
                                                 <div class="btn-group w-100">
                                                     <a href="{{ route('user.show-student', $student) }}"

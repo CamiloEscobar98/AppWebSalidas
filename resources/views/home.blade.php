@@ -219,8 +219,9 @@
                 <div class="modal-header bg-appsalidas py-5">
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('user.update-password') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('user.update-password') }}" method="post">
                         @csrf
+                        <input type="hidden" name="user_email" value="{{ Auth()->user()->emailu }}">
                         @method('patch')
                         <div class="form-group">
                             <label class="font-weight-bold">Nueva Contraseña:</label>

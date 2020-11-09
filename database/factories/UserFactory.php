@@ -50,6 +50,6 @@ $factory->define(User::class, function (Faker $faker) {
 });
 
 $factory->afterCreating(\App\User::class, function ($user, Faker $faker) {
-    $role = mt_rand(2, 4);
+    $role = mt_rand(2, 3);
     $user->roles()->attach($role);
 });

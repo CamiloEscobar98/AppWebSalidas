@@ -45,6 +45,7 @@
                         <form action="{{ route('user.update') }}" method="post" class="my-4">
                             @csrf
                             @method('put')
+                            <input type="hidden" name="id" value="{{ $teacher->id }}">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">

@@ -148,7 +148,7 @@
                                             </td>
                                         </tr>
                                     @empty
-                                        No hay registrados de directores.
+                                        No hay directores registrados.
                                     @endforelse
                                 </tbody>
                                 <tfoot class="bg-appsalidas">

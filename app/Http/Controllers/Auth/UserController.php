@@ -66,7 +66,7 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        $usuario = \App\User::where('emailu', $request->emailu)->first();
+        $usuario = \App\User::find($request->id);
         $rules = [
             'name' => ['required', 'string'],
             'lastname' => ['required', 'string'],
@@ -139,7 +139,7 @@ class UserController extends Controller
 
     public function updatePassword(Request $request)
     {
-        $usuario = \App\User::where('emailu', $request->user_email);
+        $usuario = \App\User::where('emailu', $request->user_email)->first();
         $rules = [
             'password' => ['required', 'string']
         ];
