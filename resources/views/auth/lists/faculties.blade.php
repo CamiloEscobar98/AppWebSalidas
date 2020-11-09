@@ -70,7 +70,8 @@
                                                 <div class="btn-group w-100">
                                                     <a href="{{ route('user.show-faculty', $faculty) }}"
                                                         class="btn btn-info  mr-2">Visualizar</a>
-                                                    <button class="btn btn-danger delete-faculty" data-tr="{{ $loop->iteration }}"
+                                                    <button class="btn btn-danger delete-faculty"
+                                                        data-tr="{{ $loop->iteration }}"
                                                         data-id="{{ $faculty->id }}">Eliminar</button>
                                                 </div>
                                             </td>
@@ -126,11 +127,17 @@
                         'Eliminado!',
                         response.data,
                         'success'
-                    )
-
+                    );
+                    var fila = $(this).attr('data-tr');
+                    $("#fila" + fila).remove();
+                }).catch(response => {
+                    Swal.fire(
+                        '¡Error!',
+                        'No se pudo eliminar la facultad.',
+                        'error'
+                    );
                 });
-                var fila = $(this).attr('data-tr');
-                $("#fila" + fila).remove();
+
             }
         })
     });

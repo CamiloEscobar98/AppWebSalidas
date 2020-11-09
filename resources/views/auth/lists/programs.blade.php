@@ -149,11 +149,17 @@
                         'Eliminado!',
                         response.data,
                         'success'
-                    )
-
+                    );
+                    var fila = $(this).attr('data-tr');
+                    $("#fila" + fila).remove();
+                }).catch(response => {
+                    Swal.fire(
+                        '¡Error!',
+                        'No se ha podido eliminar.',
+                        'error'
+                    );
                 });
-                var fila = $(this).attr('data-tr');
-                $("#fila" + fila).remove();
+
             }
         })
     });
