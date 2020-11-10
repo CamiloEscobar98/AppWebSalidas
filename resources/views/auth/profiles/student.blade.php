@@ -14,7 +14,7 @@
         @endif
         @if (session()->has('update-password'))
             <div class="alert alert-success">
-                <strong>¡Éxito!</strong> Se ha actualizado correctamente la contraseña.
+                <strong>¡Éxito!</strong> {{ session('update-password') }}
             </div>
         @endif
         @error('image_profile')
@@ -242,9 +242,10 @@
                 <div class="modal-header bg-appsalidas py-5">
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('user.update-password') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('user.update-password') }}" method="post">
                         @csrf
                         @method('patch')
+                        <input type="hidden" name="id" value="{{ $student->id }}">
                         <div class="form-group">
                             <label class="font-weight-bold">Nueva Contraseña:</label>
                             <input class="form-control" type="password" name="password">
@@ -253,6 +254,7 @@
                             <button type="submit" class="btn btn-block btn-appsalidas2">Actualizar Contraseña</button>
                         </div>
                     </form>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

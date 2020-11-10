@@ -144,7 +144,7 @@ class UserController extends Controller
 
     public function updatePassword(Request $request)
     {
-        $usuario = \App\User::where('emailu', $request->user_email)->first();
+        $usuario = \App\User::find($request->id);
         $rules = [
             'password' => ['required', 'string']
         ];
@@ -153,7 +153,7 @@ class UserController extends Controller
         $validated = $request->validate($rules, [], $attributes);
         $usuario->password = bcrypt($validated['password']);
         $usuario->save();
-        return back()->with('update-password', true);
+        return back()->with('update-password', 'Tu contraseña ha cambiado a ' . $validated['password']);
         // return $validated;
     }
 

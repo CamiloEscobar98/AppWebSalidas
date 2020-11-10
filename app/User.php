@@ -25,9 +25,6 @@ class User extends Authenticatable
         'program_id',
     ];
 
-    protected $hidden = [
-        'password'
-    ];
 
     public function document()
     {

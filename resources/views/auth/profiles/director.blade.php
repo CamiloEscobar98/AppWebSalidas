@@ -14,7 +14,7 @@
         @endif
         @if (session()->has('update-password'))
             <div class="alert alert-success">
-                <strong>¡Éxito!</strong> Se ha actualizado correctamente la contraseña.
+                <strong>¡Éxito!</strong> {{ session('update-password') }}
             </div>
         @endif
         @error('image_profile')
@@ -244,7 +244,7 @@
                 <div class="modal-body">
                     <form action="{{ route('user.update-password') }}" method="post" enctype="multipart/form-data">
                         @csrf
-                        @method('patch')
+                        @method('patch') <input type="hidden" name="id" value="{{ $director->id }}">
                         <div class="form-group">
                             <label class="font-weight-bold">Nueva Contraseña:</label>
                             <input class="form-control" type="password" name="password">
