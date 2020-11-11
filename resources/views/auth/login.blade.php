@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'AppSalidas - Entrar')
+@section('title', 'Iniciar Sesión')
 @section('content')
     <section id="login">
         <div class="container">
