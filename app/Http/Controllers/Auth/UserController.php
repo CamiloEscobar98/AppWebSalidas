@@ -18,7 +18,6 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        // return $request->all();
         $rules = [
             'name' => ['required', 'string'],
             'lastname' => ['required', 'string'],
@@ -61,7 +60,6 @@ class UserController extends Controller
             return back()->with('register_complete', 'Se ha registrado correctamente al estudiante ' . $user->name . ' ' . $user->lastname);
         }
         return back()->with('register_failed', 'No se ha podido registrar correctamente');
-        // return 'R estudiante';
     }
 
     public function update(Request $request)
@@ -121,7 +119,7 @@ class UserController extends Controller
     {
         $usuario = \App\User::where('emailu', $request->user_email)->first();
         $rules = [
-            'image_profile' => ['required', 'image', 'mimes:jpeg,jpg,png']
+            'image_profile' => ['required', 'image', 'mimes:jpeg,jpg,png,jfif']
         ];
         $attributes = ['image_profile' => 'Imágen de Perfil'];
 
@@ -144,7 +142,7 @@ class UserController extends Controller
 
     public function updatePassword(Request $request)
     {
-        $usuario = \App\User::find($request->id);
+        $usuario = \App\User::where('emailu', $request->user_email)->first();
         $rules = [
             'password' => ['required', 'string']
         ];

@@ -278,10 +278,11 @@
                             showConfirmButton: false,
                             timer: 2500
                         });
-                        location.reload();
+                        setTimeout(() => {
+                            location.reload(true)
+                        }, 500);
                     });
-                    var fila = $(this).attr('data-tr');
-                    $("#fila" + fila).remove();
+
                 }
             });
         })
