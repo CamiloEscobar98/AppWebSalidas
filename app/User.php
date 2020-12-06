@@ -25,6 +25,10 @@ class User extends Authenticatable
         'program_id',
     ];
 
+    public function fullname()
+    {
+        return $this->name . ' ' . $this->lastname;
+    }
 
     public function document()
     {

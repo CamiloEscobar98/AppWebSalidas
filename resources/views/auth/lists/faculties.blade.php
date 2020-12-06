@@ -130,10 +130,13 @@
                     );
                     var fila = $(this).attr('data-tr');
                     $("#fila" + fila).remove();
+                    setTimeout(() => {
+                        location.reload(true)
+                    }, 2000);
                 }).catch(response => {
                     Swal.fire(
                         '¡Error!',
-                        'No se pudo eliminar la facultad.',
+                        '¡No se pudo eliminar la facultad!',
                         'error'
                     );
                 });

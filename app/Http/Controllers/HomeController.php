@@ -64,6 +64,13 @@ class HomeController extends Controller
         return view('auth.lists.programs')->with('programs', $programs)->with('faculties', $faculties);
     }
 
+    public function activitiesList()
+    {
+        $docentes = \App\Models\Role::where('name', 'docente')->first()->users;
+        $actividades = \App\Models\Activity::paginate(8);
+        return view('auth.lists.activities', ['docentes' => $docentes, 'actividades' => $actividades]);
+    }
+
     // Profiles
 
     public function showStudent(\App\User $student)
@@ -104,10 +111,22 @@ class HomeController extends Controller
         $faculties = \App\Models\Faculty::all();
         $students = $program->studentsPaginate(5);
         $teachers = $program->teachersPaginate(5);
-        return view('auth.profiles.program')
-            ->with('program', $program)
-            ->with('faculties', $faculties)
-            ->with('students', $students)
-            ->with('teachers', $teachers);
+        return view('auth.profiles.program', [
+            'program' => $program,
+            'faculties' => $faculties,
+            'students' => $students,
+            'teachers' => $teachers
+        ]);
+    }
+
+    public function showActivity(\App\Models\Activity $activity)
+    {
+        $docentes = \App\Models\Role::where('name', 'docente')->first()->users;
+        $requirements = $activity->requirements()->paginate(5);
+        return view('auth.profiles.activity', [
+            'docentes' => $docentes,
+            'activity' => $activity,
+            'requirements' => $requirements
+        ]);
     }
 }

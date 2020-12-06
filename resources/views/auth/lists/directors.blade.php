@@ -128,7 +128,7 @@
                                         <th class="font-weight-bold w-25">Director</th>
                                         <th class="font-weight-bold w-auto">Correo Institucional</th>
                                         <th class="font-weight-bold w-25">Programa</th>
-                                        <th class="font-weight-bold w-auto">...</th>
+                                        <th class="font-weight-bold" style="width: 5vh">...</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -139,16 +139,20 @@
                                             <td>{{ $director->emailu }}</td>
                                             <td class="text-capitalize">{{ $director->program->name }}</td>
                                             <td>
-                                                <div class="btn-group w-100">
+                                                <div class="btn-group">
                                                     <a href="{{ route('user.show-director', $director) }}"
-                                                        class="btn btn-info  mr-2">Visualizar</a>
+                                                        class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                                     <button class="btn btn-danger delete-user" data-tr="{{ $loop->iteration }}"
-                                                        data-id="{{ $director->id }}">Eliminar</button>
+                                                        data-id="{{ $director->id }}"><i class="fa fa-trash"
+                                                            aria-hidden="true"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
                                     @empty
-                                        No hay directores registrados.
+                                        <tr>
+                                            <h5 class="font-weight-bold bg-appsalidas py-2 px-2 text-center">No hay directores
+                                                registrados.</h5>
+                                        </tr>
                                     @endforelse
                                 </tbody>
                                 <tfoot class="bg-appsalidas">
@@ -198,12 +202,21 @@
                         response.data,
                         'success'
                     )
-
+                    var fila = $(this).attr('data-tr');
+                    $("#fila" + fila).remove();
+                    setTimeout(() => {
+                        location.reload(true)
+                    }, 2000);
                 });
-                var fila = $(this).attr('data-tr');
-                $("#fila" + fila).remove();
+
             }
-        })
+        }).catch(response => {
+            Swal.fire(
+                '¡Error!',
+                '¡No se pudo eliminar el director!',
+                'error'
+            );
+        });
     });
 
 </script>

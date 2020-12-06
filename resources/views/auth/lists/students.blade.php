@@ -2,26 +2,28 @@
 @section('title', 'Listas-estudiantes')
 @section('content')
     <div class="container-fluid">
-        @if (session()->has('register_complete'))
-            <div class="alert alert-success">
-                <strong>¡Éxito!</strong> {{ session('register_complete') }}
-            </div>
-            <script>
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: "Se ha registrado correctamente",
-                    showConfirmButton: false,
-                    timer: 2500
-                })
+        <div>
+            @if (session()->has('register_complete'))
+                <div class="alert alert-success">
+                    <strong>¡Éxito!</strong> {{ session('register_complete') }}
+                </div>
+                <script>
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: "Se ha registrado correctamente",
+                        showConfirmButton: false,
+                        timer: 2500
+                    })
 
-            </script>
-        @endif
-        @if (session()->has('register_failed'))
-            <div class="alert alert-danger">
-                <strong>¡Error!</strong> {{ session('register_failed') }}
-            </div>
-        @endif
+                </script>
+            @endif
+            @if (session()->has('register_failed'))
+                <div class="alert alert-danger">
+                    <strong>¡Error!</strong> {{ session('register_failed') }}
+                </div>
+            @endif
+        </div>
         <div class="row justify-content-center">
             <div class="col-md-3 mt-2">
                 <div class="card">
@@ -128,7 +130,7 @@
                                         <th class="font-weight-bold w-25">Estudiante</th>
                                         <th class="font-weight-bold w-auto">Correo Institucional</th>
                                         <th class="font-weight-bold w-25">Programa</th>
-                                        <th class="font-weight-bold w-auto">...</th>
+                                        <th class="font-weight-bold" style="width: 5vh">...</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -141,17 +143,20 @@
                                                     href="{{ route('user.show-program', $student->program) }}"
                                                     class="btn btn-outline-primary">{{ $student->program->name }}</a></td>
                                             <td>
-                                                <div class="btn-group w-100">
+                                                <div class="btn-group">
                                                     <a href="{{ route('user.show-student', $student) }}"
-                                                        class="btn btn-info  mr-2">Visualizar</a>
+                                                        class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                                     <button class="btn btn-danger delete-student"
-                                                        data-tr="{{ $loop->iteration }}"
-                                                        data-id="{{ $student->id }}">Eliminar</button>
+                                                        data-tr="{{ $loop->iteration }}" data-id="{{ $student->id }}"><i
+                                                            class="fa fa-trash" aria-hidden="true"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
                                     @empty
-                                        No hay registrados de estudiantes.
+                                        <tr>
+                                            <h5 class="font-weight-bold bg-appsalidas py-2 px-2 text-center">No hay estudiantes
+                                                registrados.</h5>
+                                        </tr>
                                     @endforelse
                                 </tbody>
                                 <tfoot class="bg-appsalidas">
@@ -200,11 +205,19 @@
                         response.data,
                         'success'
                     )
-
+                    var fila = $(this).attr('data-tr');
+                    $("#fila" + fila).remove();
+                    setTimeout(() => {
+                        location.reload(true)
+                    }, 2000);
                 });
-                var fila = $(this).attr('data-tr');
-                $("#fila" + fila).remove();
             }
+        }).catch(response => {
+            Swal.fire(
+                '¡Error!',
+                'No se pudo eliminar el estudiante.',
+                'error'
+            );
         });
     });
 

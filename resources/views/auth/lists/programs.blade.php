@@ -152,10 +152,13 @@
                     );
                     var fila = $(this).attr('data-tr');
                     $("#fila" + fila).remove();
+                    setTimeout(() => {
+                        location.reload(true)
+                    }, 2000);
                 }).catch(response => {
                     Swal.fire(
                         '¡Error!',
-                        'No se ha podido eliminar.',
+                        '¡No se ha podido eliminar el programa!',
                         'error'
                     );
                 });

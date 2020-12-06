@@ -15,8 +15,8 @@
             @endif
         </div>
         <div class="row">
-            <div class="col-md-3">
-                <div class="card">
+            <div class="col-12 col-md-3">
+                <div class="card shadow">
                     <div class="card-header bg-appsalidas py-4">
                         <h4 class="font-weight-bold my-1">Perfil Programa</h4>
                     </div>
@@ -67,7 +67,7 @@
                     <div class="card-footer bg-appsalidas py-4"></div>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-12 col-md-9">
                 <div class="row">
                     <div class="col-12 col-md-6">
                         <div class="card">
