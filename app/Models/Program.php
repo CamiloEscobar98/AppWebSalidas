@@ -25,7 +25,6 @@ class Program extends Model
     public function students()
     {
         $role = \App\Models\Role::where('name', 'estudiante')->first();
-        $role;
         return $role->users()->where('program_id', $this->id)->get();
     }
 

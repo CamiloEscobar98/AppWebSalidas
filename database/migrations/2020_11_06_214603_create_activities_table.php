@@ -14,8 +14,9 @@ class CreateActivitiesTable extends Migration
     public function up()
     {
         Schema::create('activities', function (Blueprint $table) {
-            $table->unsignedBigInteger('id', true);
+            $table->unsignedBigInteger('id', true); // PK
             $table->unsignedMediumInteger('teacher_id');
+            $table->unsignedBigInteger('address_id')->nullable(); // FK
             $table->string('title');
             $table->string('subtitle');
             $table->text('description');

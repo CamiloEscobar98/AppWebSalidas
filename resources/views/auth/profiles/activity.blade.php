@@ -52,7 +52,7 @@
                                             class="font-weight-bold @error('title') is-invalid @enderror">Titulo</label>
                                         <input type="text" name="title" id="title" class="form-control"
                                             value="{{ $activity->title }}" placeholder="Titulo de la actividad"
-                                            aria-describedby="helpId">
+                                            aria-describedby="helpId" {{ checkInputAdministrador(session('role')) }}>
                                         @error('title')
                                             <small id="helpId"
                                                 class="text-white bg-appsalidas font-weight-bold">{{ $message }}</small>
@@ -63,7 +63,7 @@
                                             class="font-weight-bold @error('subtitle') is-invalid @enderror">Subtitulo</label>
                                         <input type="text" name="subtitle" id="subtitle" class="form-control"
                                             value="{{ $activity->subtitle }}" placeholder="Subtitulo de la actividad"
-                                            aria-describedby="helpId">
+                                            aria-describedby="helpId" {{ checkInputAdministrador(session('role')) }}>
                                         @error('subtitle')
                                             <small id="helpId"
                                                 class="text-white bg-appsalidas font-weight-bold">{{ $message }}</small>
@@ -74,7 +74,7 @@
                                             class="font-weight-bold @error('place') is-invalid @enderror">Lugar</label>
                                         <input type="text" name="place" id="place" class="form-control"
                                             value="{{ $activity->place }}" placeholder="Lugar de la actividad"
-                                            aria-describedby="helpId">
+                                            aria-describedby="helpId" {{ checkInputAdministrador(session('role')) }}>
                                         @error('place')
                                             <small id="helpId"
                                                 class="text-white bg-appsalidas font-weight-bold">{{ $message }}</small>
@@ -84,7 +84,8 @@
                                         <label for="description" class="font-weight-bold ">Descripción</label>
                                         <textarea name="description" id="description" rows="3"
                                             class="form-control @error('description') is-invalid @enderror"
-                                            aria-describedby="helpId">{{ $activity->description }}</textarea>
+                                            aria-describedby="helpId"
+                                            {{ checkInputAdministrador(session('role')) }}>{{ $activity->description }}</textarea>
                                         @error('description')
                                             <small id="helpId"
                                                 class="text-white bg-appsalidas font-weight-bold">{{ $message }}</small>
@@ -95,16 +96,21 @@
                                             de
                                             Actividad</label>
                                         <input type="date" name="date" id="date" class="form-control"
-                                            value="{{ $activity->date }}" aria-describedby="helpId">
+                                            value="{{ $activity->date }}" aria-describedby="helpId"
+                                            {{ checkInputAdministrador(session('role')) }}>
                                         @error('date')
                                             <small id="helpId"
                                                 class="text-white bg-appsalidas font-weight-bold">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label for="teacher" class="font-weight-bold">Seleccionar docente</label>
+                                        @if (session('role') == 'administrador' || session('role') == 'director')
+                                            <label for="teacher" class="font-weight-bold">Seleccionar docente</label>
+                                        @else
+                                            <label for="teacher" class="font-weight-bold">Docente</label>
+                                        @endif
                                         <select class="form-control @error('teacher') is-invalid  @enderror " name="teacher"
-                                            id="teacher">
+                                            id="teacher" {{ checkInputAdministrador(session('role')) }}>
                                             <option value="-1">Selecciona una opción</option>
                                             @foreach ($docentes as $docente)
                                                 @if ($docente->emailu == $activity->teacher->emailu)
@@ -122,42 +128,48 @@
                                                 class="text-white bg-appsalidas font-weight-bold">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-appsalidas btn-block">Actualizar</button>
-                                    </div>
+                                    @if (session('role') == 'administrador' || session('role') == 'director')
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-appsalidas btn-block">Actualizar</button>
+                                        </div>
+                                    @endif
 
                                 </form>
                             </div>
                             <div class="card-footer bg-appsalidas py-4"></div>
                         </div>
                     </div>
-                    <div class="col-12 mt-4">
-                        <div class="card shadow">
-                            <div class="card-header bg-appsalidas py-4">
-                                <h4 class="font-weight-bold my-0">Registrar Requerimiento</h4>
+                    @if (session('role') == 'administrador' || session('role') == 'director')
+                        <div class="col-12 mt-4">
+                            <div class="card shadow">
+                                <div class="card-header bg-appsalidas py-4">
+                                    <h4 class="font-weight-bold my-0">Registrar Requerimiento</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form action="{{ route('requirement.register') }}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="activity" value="{{ $activity->id }}">
+                                        <div class="form-group">
+                                            <label for="requirement" class="font-weight-bold">Requerimiento</label>
+                                            <input type="text"
+                                                class="form-control @error('requirement') is-invalid @enderror"
+                                                name="requirement" id="requirement" aria-describedby="helpId"
+                                                {{ checkInputAdministrador(session('role')) }}
+                                                placeholder="Introduce el requerimiento de la actividad">
+                                            @error('requirement')
+                                                <small id="helpId"
+                                                    class="text-white bg-appsalidas font-weight-bold">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-appsalidas btn-block">Registrar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer bg-appsalidas py-4"></div>
                             </div>
-                            <div class="card-body">
-                                <form action="{{ route('requirement.register') }}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="activity" value="{{ $activity->id }}">
-                                    <div class="form-group">
-                                        <label for="requirement" class="font-weight-bold">Requerimiento</label>
-                                        <input type="text" class="form-control @error('requirement') is-invalid @enderror"
-                                            name="requirement" id="requirement" aria-describedby="helpId"
-                                            placeholder="Introduce el requerimiento de la actividad">
-                                        @error('requirement')
-                                            <small id="helpId"
-                                                class="text-white bg-appsalidas font-weight-bold">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-appsalidas btn-block">Registrar</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="card-footer bg-appsalidas py-4"></div>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
             </div>
@@ -186,10 +198,12 @@
                                                     <button type="button" class="btn btn-primary">
                                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                                     </button>
-                                                    <button type="button" class="btn btn-danger delete-requirement"
-                                                        data-tr="{{ $loop->iteration }}" data-id="{{ $requirement->id }}">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
+                                                    @if (session('role') == 'administrador' || session('role') == 'director')
+                                                        <button type="button" class="btn btn-danger delete-requirement"
+                                                            data-tr="{{ $loop->iteration }}" data-id="{{ $requirement->id }}">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                                        </button>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

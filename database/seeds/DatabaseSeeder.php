@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
             FacultySeeder::class,
             ProgramSeeder::class,
             UserSeeder::class,
-            ActivitySeeder::class
+            ActivitySeeder::class,
+            RoleActivitySeeder::class
         ]);
     }
 }

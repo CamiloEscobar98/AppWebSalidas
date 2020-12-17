@@ -22,7 +22,7 @@ class HomeController extends Controller
     // Lists
     public function studentsList()
     {
-        request()->user()->authorizeRoles(['director', 'administrador']);
+        request()->user()->authorizeRoles(['director del Programa', 'administrador']);
         $students = \App\Models\Role::find(2)->users()->orderBy('name', 'ASC')->paginate(8);
         $programs = \App\Models\Program::orderBy('faculty_id', 'ASC')->get();
         $dtypes = \App\Models\Document_type::all();
@@ -32,7 +32,7 @@ class HomeController extends Controller
 
     public function teachersList()
     {
-        request()->user()->authorizeRoles(['director', 'administrador']);
+        request()->user()->authorizeRoles(['director del Programa', 'administrador']);
         $teachers = \App\Models\Role::find(3)->users()->orderBy('name', 'ASC')->paginate(8);
         $programs = \App\Models\Program::orderBy('faculty_id', 'ASC')->get();
         $dtypes = \App\Models\Document_type::all();
@@ -71,11 +71,19 @@ class HomeController extends Controller
         return view('auth.lists.activities', ['docentes' => $docentes, 'actividades' => $actividades]);
     }
 
+    public function allactivities()
+    {
+        $actividades = \App\Models\Activity::paginate(8);
+        return view('auth.lists.allactivities', [
+            'activities' => $actividades
+        ]);
+    }
+
     // Profiles
 
     public function showStudent(\App\User $student)
     {
-        request()->user()->authorizeRoles(['director', 'administrador']);
+        request()->user()->authorizeRoles(['director del Programa', 'administrador']);
         $programs = \App\Models\Program::all();
         $dtypes = \App\Models\Document_type::all();
         return view('auth.profiles.student')->with('student', $student)->with('programs', $programs)->with('document_types', $dtypes);
@@ -83,7 +91,7 @@ class HomeController extends Controller
 
     public function showTeacher(\App\User $teacher)
     {
-        request()->user()->authorizeRoles(['director', 'administrador']);
+        request()->user()->authorizeRoles(['director del Programa', 'administrador']);
         $programs = \App\Models\Program::all();
         $dtypes = \App\Models\Document_type::all();
         return view('auth.profiles.teacher')->with('teacher', $teacher)->with('programs', $programs)->with('document_types', $dtypes);

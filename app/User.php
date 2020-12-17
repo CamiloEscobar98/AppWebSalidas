@@ -50,6 +50,21 @@ class User extends Authenticatable
         return $this->belongsToMany(\App\Models\Role::class, 'role_users');
     }
 
+    public function myActivities()
+    {
+        return $this->belongsToMany(\App\Models\Activity::class, 'participations')->withPivot(['approved', 'assist']);
+    }
+
+    public function hasParticipate($title)
+    {
+        $aux = null;
+        if ($this->myActivities()->where('title', $title)->first()) {
+            return $this->myActivities()->where('title', $title)->first();
+        } else {
+            return false;
+        }
+    }
+
     public function hasRole($role)
     {
         if ($this->roles()->where('name', $role)->first()) {

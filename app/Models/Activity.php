@@ -20,6 +20,11 @@ class Activity extends Model
         return $this->belongsTo(\App\User::class, 'teacher_id');
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(\App\User::class, 'participations');
+    }
+
     public function requirements()
     {
         return $this->hasMany(\App\Models\Requirement::class);

@@ -34,11 +34,13 @@
                         <h4 class="font-weight-bold my-1">Perfil Docente</h4>
                     </div>
                     <div class="card-body">
-                        <button class="btn btn-appsalidas2 float-left" data-toggle="modal"
-                            data-target="#changePassword">Cambiar contraseña</button>
-                        <button class="btn btn-appsalidas2 float-right" data-toggle="modal"
-                            data-target="#changePhoto">Cambiar
-                            foto de perfil</button>
+                        @if (session('role') == 'administrador')
+                            <button class="btn btn-appsalidas2 float-left" data-toggle="modal"
+                                data-target="#changePassword">Cambiar contraseña</button>
+                            <button class="btn btn-appsalidas2 float-right" data-toggle="modal"
+                                data-target="#changePhoto">Cambiar
+                                foto de perfil</button>
+                        @endif
                         <img src="{{ asset($teacher->image->url . '/' . $teacher->image->image) }}"
                             class="img-fluid mx-auto d-block" width="200vh">
                         <hr>
@@ -51,7 +53,8 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Nombres:</label>
                                         <input type="text" name="name" class="form-control text-capitalize"
-                                            value="{{ $teacher->name }}" aria-describedby="helpId">
+                                            value="{{ $teacher->name }}" aria-describedby="helpId"
+                                            {{ checkInputAdministrador(session('role')) }}>
                                         @error('name')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
@@ -59,7 +62,8 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Apellidos:</label>
                                         <input type="text" name="lastname" class="form-control text-capitalize"
-                                            value="{{ $teacher->lastname }}" aria-describedby="helpId">
+                                            value="{{ $teacher->lastname }}" aria-describedby="helpId"
+                                            {{ checkInputAdministrador(session('role')) }}>
                                         @error('lastname')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
@@ -67,7 +71,8 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Código:</label>
                                         <input type="text" name="code" class="form-control" value="{{ $teacher->code }}"
-                                            aria-describedby="helpId" maxlength="7">
+                                            aria-describedby="helpId" {{ checkInputAdministrador(session('role')) }}
+                                            maxlength="7">
                                         @error('code')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
@@ -75,7 +80,7 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Correo Personal:</label>
                                         <input type="text" name="email" class="form-control" value="{{ $teacher->email }}"
-                                            aria-describedby="helpId">
+                                            aria-describedby="helpId" {{ checkInputAdministrador(session('role')) }}>
                                         @error('email')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
@@ -83,14 +88,15 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Correo universitario:</label>
                                         <input type="text" name="emailu" class="form-control" value="{{ $teacher->emailu }}"
-                                            aria-describedby="helpId">
+                                            aria-describedby="helpId" {{ checkInputAdministrador(session('role')) }}>
                                         @error('emailu')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="font-weight-bold">Programa al que pertenece:</label>
-                                        <select class="custom-select text-capitalize" name="program_id">
+                                        <select class="custom-select text-capitalize" name="program_id"
+                                            {{ checkInputAdministrador(session('role')) }}>
                                             <option value="-1">Seleccione un programa</option>
                                             @foreach ($programs as $program)
                                                 @if ($teacher->program->code == $program->code)
@@ -114,7 +120,8 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Dirección de Residencia:</label>
                                         <input type="text" name="address" class="form-control text-capitalize"
-                                            value="{{ $teacher->address }}" aria-describedby="helpId">
+                                            value="{{ $teacher->address }}" aria-describedby="helpId"
+                                            {{ checkInputAdministrador(session('role')) }}>
                                         @error('address')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
@@ -122,7 +129,8 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Teléfono Celular:</label>
                                         <input type="text" name="phone" class="form-control text-capitalize"
-                                            value="{{ $teacher->phone }}" aria-describedby="helpId">
+                                            value="{{ $teacher->phone }}" aria-describedby="helpId"
+                                            {{ checkInputAdministrador(session('role')) }}>
                                         @error('phone')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
@@ -130,14 +138,16 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Documento:</label>
                                         <input type="text" name="document" class="form-control text-capitalize"
-                                            value="{{ $teacher->document->document }}" aria-describedby="helpId">
+                                            value="{{ $teacher->document->document }}" aria-describedby="helpId"
+                                            {{ checkInputAdministrador(session('role')) }}>
                                         @error('document')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="font-weight-bold">Tipo de Documento:</label>
-                                        <select class="custom-select text-capitalize" name="document_type_id">
+                                        <select class="custom-select text-capitalize" name="document_type_id"
+                                            {{ checkInputAdministrador(session('role')) }}>
                                             <option value="-1">Seleccione un Tipo de Documento</option>
                                             @foreach ($document_types as $doct_type)
                                                 @if ($teacher->document->dtype->type == $doct_type->type)
@@ -159,7 +169,8 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">Fecha de Nacimiento:</label>
                                         <input type="date" name="birthday" class="form-control text-capitalize"
-                                            value="{{ $teacher->birthday }}" aria-describedby="helpId" min="1940-01-01"
+                                            value="{{ $teacher->birthday }}" aria-describedby="helpId"
+                                            {{ checkInputAdministrador(session('role')) }} min="1940-01-01"
                                             max="2004-12-31">
                                         @error('birthday')
                                             <small id="helpId" class="text-white bg-appsalidas">{{ $message }}</small>
@@ -167,9 +178,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-block btn-appsalidas">Actualizar</button>
-                            </div>
+                            @if (session('role') == 'administrador')
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-block btn-appsalidas">Actualizar</button>
+                                </div>
+                            @endif
                         </form>
                     </div>
                     <div class="card-footer bg-appsalidas py-4"></div>

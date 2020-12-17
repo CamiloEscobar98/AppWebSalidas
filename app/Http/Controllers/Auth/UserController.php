@@ -38,10 +38,18 @@ class UserController extends Controller
         ];
         $program = \App\Models\Program::find($request->program_id);
         $validated = $request->validate($rules, [], $attributes);
+        $role = \App\Models\Role::find($request->role_id);
+        if ($role->id == 4) {
+            $usuario =  $role->users()->where('program_id', 1)->first();
+            if ($usuario) {
+                return back()->with('register_failed', 'No se ha podido registrar correctamente, ya existe un director registrado');
+            }
+        }
         $document = \App\Models\Document::create([
             'document' => $validated['document'],
             'document_type_id' =>  $validated['document_type_id']
         ]);
+
         $user = \App\User::create([
             'name' => mb_strtolower($validated['name'], 'UTF-8'),
             'lastname' => mb_strtolower($validated['lastname'], 'UTF-8'),
@@ -178,6 +186,34 @@ class UserController extends Controller
             if ($usuario->delete()) {
                 return 'Se ha eliminado correctamente a ' . $aux->name . ' ' . $aux->lastname;
             }
+        }
+    }
+
+    public function myActivities()
+    {
+        $myactivities = \App\User::find(auth()->user()->id)->myActivities()->paginate(5);
+        return view('auth.lists.my-activities', [
+            'actividades' => $myactivities
+        ]);
+    }
+
+    public function addActivity(Request $request)
+    {
+        $activity = \App\Models\Activity::find($request->activity);
+        $user = \App\User::find($request->user);
+        if (!$user->hasParticipate($activity->title)) {
+            $user->myActivities()->attach($activity->id);
+            return response()->json([
+                'title' => '¡Éxito!',
+                'alert' => 'success',
+                'message' => 'Se ha inscrito a la actividad correctamente.'
+            ]);
+        } else {
+            return response()->json([
+                'title' => '!Alto!',
+                'alert' => 'warning',
+                'message' => 'No has completado tu última temática.'
+            ]);
         }
     }
 }

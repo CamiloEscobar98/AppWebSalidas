@@ -24,6 +24,7 @@ Route::delete('/user/delete', 'Auth\UserController@destroy')->name('user.delete'
 Route::patch('/user/update-photo', 'Auth\UserController@updatePhoto')->name('user.update-photo');
 Route::patch('/user/update-password', 'Auth\UserController@updatePassword')->name('user.update-password');
 Route::delete('/user/delete-photo', 'Auth\UserController@deletePhoto')->name('user.delete-photo');
+Route::post('/user-add-activity', 'Auth\UserController@addActivity')->name('user.addActivity');
 
 Route::post('/faculty/register', 'FacultyController@register')->name('faculty.register');
 Route::put('/faculty/update', 'FacultyController@update')->name('faculty.update');
@@ -33,19 +34,21 @@ Route::post('/program/register', 'ProgramController@register')->name('program.re
 Route::put('/program/update', 'ProgramController@update')->name('program.update');
 Route::delete('/program/delete', 'ProgramController@destroy')->name('program.delete');
 
-Route::post('/activity/register', [\App\Http\Controllers\ActivityController::class, 'register'])->name('activity.register');
-Route::delete('/activity/delete', [\App\Http\Controllers\ActivityController::class, 'destroy'])->name('activity.delete');
-Route::put('/activity/{activity}/update', [\App\Http\Controllers\ActivityController::class, 'update'])->name('activity.update');
+Route::post('/activity/register', 'ActivityController@register')->name('activity.register');
+Route::delete('/activity/delete', 'ActivityController@destroy')->name('activity.delete');
+Route::put('/activity/{activity}/update', 'ActivityController@update')->name('activity.update');
 
-Route::post('/requirement/register', [\App\Http\Controllers\RequirementController::class, 'register'])->name('requirement.register');
-Route::delete('/requirement/delete', [\App\Http\Controllers\RequirementController::class, 'destroy'])->name('requirement.delete');
+Route::post('/requirement/register', 'RequirementController@register')->name('requirement.register');
+Route::delete('/requirement/delete', 'RequirementController@destroy')->name('requirement.delete');
 
-Route::get('/lista-estudiantes', [\App\Http\Controllers\HomeController::class, 'studentsList'])->name('students');
+Route::get('/lista-estudiantes', 'HomeController@studentsList')->name('students');
 Route::get('/lista-docentes', 'HomeController@teachersList')->name('teachers');
 Route::get('/lista-directores', 'HomeController@directorsList')->name('directors');
 Route::get('/lista-facultades', 'HomeController@facultiesList')->name('faculties');
 Route::get('/lista-programas', 'HomeController@programsList')->name('programs');
-Route::get('/lista-actividades', [\App\Http\Controllers\HomeController::class, 'activitiesList'])->name('activities');
+Route::get('/lista-actividades', 'HomeController@activitiesList')->name('activities');
+Route::get('/mis-actividades', 'Auth\UserController@myActivities')->name('my-activities');
+Route::get('/todas-las-actividades', 'HomeController@allactivities')->name('allactivities');
 
 
 Route::get('/perfil-docente/{teacher}', 'HomeController@showTeacher')->name('user.show-teacher');
@@ -53,7 +56,7 @@ Route::get('/perfil-estudiante/{student}', 'HomeController@showStudent')->name('
 Route::get('/perfil-director/{director}', 'HomeController@showDirector')->name('user.show-director');
 Route::get('/perfil-facultad/{faculty}', 'HomeController@showFaculty')->name('user.show-faculty');
 Route::get('/perfil-programa/{program}', 'HomeController@showProgram')->name('user.show-program');
-Route::get('/perfil-actividad/{activity}', [\App\Http\Controllers\HomeController::class, 'showActivity'])->name('user.show-activity');
+Route::get('/perfil-actividad/{activity}', 'HomeController@showActivity')->name('user.show-activity');
 
 Auth::routes();
 
